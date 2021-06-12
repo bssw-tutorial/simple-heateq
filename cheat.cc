@@ -7,16 +7,37 @@ using real = double;
 
 enum class IC { Const, Sin };
 
+std::ostream& operator<<(std::ostream& os, const IC& init) {
+    switch(init) {
+    case IC::Const:
+        os << "const";
+        break;
+    case IC::Sin:
+        os << "sin";
+        break;
+    }
+    return os;
+}
+
 struct Params {
     real alpha;
     real u0, u1;
     real dx, dt;
     int Nx, Nt;
-    IC ic;
+    IC init;
 
     Params() : alpha(1.0), u0(0.0), u1(0.0),
                dx(1.0), dt(0.001), Nx(10), Nt(10),
-               ic(IC::Const) {}
+               init(IC::Const) {}
+    void show() {
+        std::cout << "Nx = " << Nx << std::endl;
+        std::cout << "Nt = " << Nt << std::endl;
+        std::cout << "bc = " << u0 << " " << u1 << std::endl;
+        std::cout << "alpha = " << alpha << std::endl;
+        std::cout << "dx = " << dx << std::endl;
+        std::cout << "dt = " << dt << std::endl;
+        std::cout << "ic = " << init << std::endl;
+    }
 };
 
 void usage(const char *prog) {
@@ -31,13 +52,13 @@ void usage(const char *prog) {
     std::cout << "     -ic [const|sin]         Initial Condition (const)\n";
 }
 
-int get_ic(std::string t, IC &ic) {
+int get_ic(std::string t, IC &init) {
     if(t == "const") {
-        ic = IC::Const;
+        init = IC::Const;
         return 0;
     }
     if(t == "sin") {
-        ic = IC::Sin;
+        init = IC::Sin;
         return 0;
     }
     return 1;
@@ -63,7 +84,7 @@ Params parse_args(int argc, char *argv[]) {
             } else if(s == "-dt") {
                 ret.dt = std::stod(argv[2]);
             } else if(s == "-ic") {
-                if( get_ic(argv[2], ret.ic) ) {
+                if( get_ic(argv[2], ret.init) ) {
                     usage(prog);
                     exit(1);
                 }
@@ -99,6 +120,6 @@ Params parse_args(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
     Params p = parse_args(argc, argv);
-    std::cout << "alpha: " << p.alpha << "\n";
+    p.show();
     return 0;
 }

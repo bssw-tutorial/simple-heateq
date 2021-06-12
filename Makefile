@@ -1,10 +1,20 @@
+CXX = g++
+FC = gfortran
 
+# relevant flags
+CXXSTD = -std=c++11
+FSTD = -std=f2008
 
-heat: heat.cc
-	g++ -std=c++11 -o heat heat.cc
+all: cheat fheat
 
-# relevant flags, e.g.
-# CXXFLAGS += -std=c++11
-# FFLAGS += -std=f2008
-.o.f08:
-	$(FC) $(FFLAGS) -c -o $@ $^
+cheat: cheat.o
+	$(CXX) -o $@ $^
+
+fheat: fheat.o
+	$(FC) -o $@ $^
+
+%.o: %.cc
+	$(CXX) $(CXXSTD) $(CXXFLAGS) -c -o $@ $^
+
+%.o: %.f08
+	$(FC) $(FSTD) $(FFLAGS) -c -o $@ $^
