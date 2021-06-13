@@ -21,7 +21,7 @@ object-oriented programming and numerical simulation:
     outside the main loop.  This prevents wasting simulation time.
 
   * Parameterize floating-point types.  Often, codes
-    can achieve speedup by using mixed-precesion.
+    can achieve speedup by using mixed-precision.
     This requires testing the solution accuracy
     with different precisions used for each part of
     the calculation.
@@ -33,6 +33,9 @@ object-oriented programming and numerical simulation:
   * Keep only small instruction-lists in main() (and other
     imperative functions like simulate()).  This allows later
     code to organize sequences of instruction-listing code.
+
+  * Minimize loops and function calls in python.
+    Rely on the numpy external module API instead.
 
 The included code also provides a demonstration of
 make and cmake build styles.  The cmake build includes

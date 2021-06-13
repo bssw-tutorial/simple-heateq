@@ -7,14 +7,14 @@ FSTD = -std=f2008
 
 all: cheat fheat
 
-cheat: cheat.o
+cheat: obj/cheat.o
 	$(CXX) -o $@ $^
 
-fheat: fheat.o
+fheat: obj/fheat.o
 	$(FC) -o $@ $^
 
-%.o: %.cc
+obj/%.o: src/%.cc
 	$(CXX) $(CXXSTD) $(CXXFLAGS) -c -o $@ $^
 
-%.o: %.f90
+obj/%.o: src/%.f90
 	$(FC) $(FSTD) $(FFLAGS) -c -o $@ $^
