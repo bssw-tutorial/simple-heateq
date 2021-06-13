@@ -1,0 +1,8 @@
+#ifndef _HEAT_HH
+#define _HEAT_HH
+
+// the configured options and settings
+#define HEAT_VERSION_MAJOR @heat_VERSION_MAJOR@
+#define HEAT_VERSION_MINOR @heat_VERSION_MINOR@
+
+#endif

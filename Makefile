@@ -16,5 +16,5 @@ fheat: fheat.o
 %.o: %.cc
 	$(CXX) $(CXXSTD) $(CXXFLAGS) -c -o $@ $^
 
-%.o: %.f08
+%.o: %.f90
 	$(FC) $(FSTD) $(FFLAGS) -c -o $@ $^
