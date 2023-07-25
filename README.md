@@ -39,12 +39,41 @@ object-oriented programming and numerical simulation:
 
 The included code also provides a demonstration of
 make and cmake build styles.  The cmake build includes
-tests and documentation.
+tests.
 
 
-# References
+## Using heateq in your Fortran project
 
-Several Fortran references that helped me write this include:
+The fheateq library exports CMake package files and pkg-config files
+you can reference to include fheateq in other projects.
+The package files are located in the library directory in
+the installation prefix.
+
+For CMake projects, find and link to fheateq with,
+
+```
+find_package(fheateq REQUIRED)
+...
+target_link_libraries(<your target name> PRIVATE fheateq::fheateq)
+```
+
+To make the installed fheateq project discoverable, add its install
+prefix to `CMAKE_PREFIX_PATH`.
+
+
+For other projects, you can fall-back to pkg-config using,
+```
+$ pkg-config --cflags fheateq
+$ pkg-config --libs fheateq
+```
+
+For pkg-config to find its config file, you will need to
+add `<fheateq install prefix>/pkgconfig`  to `PKG_CONFIG_PATH`.
+
+
+## References
+
+Several references that helped me write this include:
 
   * [C++ string reference](https://www.cplusplus.com/reference/string)
   * [OOP Fortran constructor/destructor](https://dannyvanpoucke.be/oop-fortran-tut4-en/)
@@ -54,3 +83,4 @@ Several Fortran references that helped me write this include:
   * [Fortran Wiki](https://en.wikibooks.org/wiki/Fortran/Fortran_procedures_and_functions#Function)
   * [Allocate in Fortran](http://www.personal.psu.edu/jhm/f90/lectures/20.html)
   * [Derived target](https://github.com/j3-fortran/fortran_proposals/issues/28)
+  * [Fortran stdlib project](https://github.com/fortran-lang/stdlib)

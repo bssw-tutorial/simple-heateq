@@ -3,7 +3,7 @@ enable_testing()
 # define a function to simplify adding tests
 # (which consist of add_executable/target_link_libraries/add_test commands)
 function(do_test target)
-  add_executable(${target} ${target}.cc)
+  add_executable(${target} ${target}.cpp)
   target_include_directories(${target}
                              PUBLIC
                               ${CMAKE_SOURCE_DIR}/include

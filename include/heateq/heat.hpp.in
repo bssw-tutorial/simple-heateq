@@ -1,8 +1,12 @@
-#ifndef _HEAT_HH
-#define _HEAT_HH
+#ifndef _HEAT_HPP
+#define _HEAT_HPP
 
 // the configured options and settings
 #define HEAT_VERSION_MAJOR @heat_VERSION_MAJOR@
 #define HEAT_VERSION_MINOR @heat_VERSION_MINOR@
+
+namespace heateq {
+using real = double;
+}
 
 #endif
