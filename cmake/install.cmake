@@ -5,14 +5,10 @@ endfunction()
 
 # e.g. install_libs(NAME mywrapper TARGETS mpiwrapper testhelpers HEADERS include/a.h include/b.h)
 function(install_libs)
-	set(oneValueArgs NAME)
 	set(multiValueArgs TARGETS HEADERS)
-	cmake_parse_arguments(INSTALL_LIBS "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+	cmake_parse_arguments(INSTALL_LIBS "" "" "${multiValueArgs}" ${ARGN})
     set(targets ${INSTALL_LIBS_TARGETS})
     set(pkg ${PROJECT_NAME})
-	if(DEFINED INSTALL_LIBS_NAME)
-		set(pkg ${INSTALL_LIBS_NAME})
-	endif()
     message(NOTICE "Will install library targets (${targets}) and headers (${INSTALL_LIBS_HEADERS}) under package name ${pkg}")
 
     # Attach these libraries to the list of exported libs.
@@ -23,7 +19,7 @@ function(install_libs)
     install(FILES ${INSTALL_LIBS_HEADERS} DESTINATION include/${pkg})
   
     # Note: we choose the following location for cmake dependency info:
-    # <prefix>/lib/cmake/${PKG}/
+    # <prefix>/lib/cmake/${pkg}/
     # install the targets to export
     install(EXPORT "${pkg}Targets"
       FILE "${pkg}Targets.cmake"
@@ -52,14 +48,16 @@ function(install_libs)
     )
 
 	# Export a pkg-config file
-	configure_file(
-	  "${CMAKE_CURRENT_SOURCE_DIR}/${pkg}.pc.in"
-	  "${CMAKE_CURRENT_BINARY_DIR}/${pkg}.pc"
-	  @ONLY
-	)
-	install(
-	  FILES
-	  "${CMAKE_CURRENT_BINARY_DIR}/${pkg}.pc"
-	  DESTINATION "lib/pkgconfig"
-	)
+	foreach(name ${targets})
+	  configure_file(
+	    "${CMAKE_CURRENT_SOURCE_DIR}/${name}.pc.in"
+	    "${CMAKE_CURRENT_BINARY_DIR}/${name}.pc"
+	    @ONLY
+  	    )
+	  install(
+	    FILES
+	    "${CMAKE_CURRENT_BINARY_DIR}/${name}.pc"
+	    DESTINATION "lib/pkgconfig"
+	  )
+    endforeach()
 endfunction()

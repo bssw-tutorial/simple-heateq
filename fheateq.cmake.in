@@ -1,8 +1,0 @@
-@PACKAGE_INIT@
-
-include ( "${CMAKE_CURRENT_LIST_DIR}/@pkg@Targets.cmake" )
-
-include(CMakeFindDependencyMacro)
-#find_dependency(MPI 2.0 REQUIRED)
-
-check_required_components(@pkg@)

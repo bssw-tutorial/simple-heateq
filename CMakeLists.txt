@@ -8,7 +8,7 @@ include(install)
 # setup all cmake variables
 option(BUILD_TESTS "Build the tests accompanying this program." ON)
 
-# create an include directory to hold generated headers and fortran modules
+# create an include directory to hold generated headers and Fortran modules
 file(MAKE_DIRECTORY include/heateq)
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/include/heateq)
 
@@ -16,12 +16,28 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/include/heateq)
 configure_file(include/heateq/heat.hpp.in include/heateq/heat.hpp)
 
 add_library(fheateq src/EnergyField.f90 src/ArgParser.f90)
+# Example for specifying Fortran standard directly:
+#target_compile_features(fheateq PUBLIC fortran_std_08)
 target_include_directories(fheateq PUBLIC
                          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/heateq>
                          $<INSTALL_INTERFACE:include/heateq>
                         )
 
+# Use interface for a header-only C++ library.
+# Otherwise, list src/*.cpp files directly.
+add_library(cheateq INTERFACE)
+# Specify a C++ standard:
+# The following two lines use INTERFACE for a header-only C++ library.
+# Otherwise, Use PUBLIC.
+target_compile_features(cheateq INTERFACE cxx_std_11)
+target_include_directories(cheateq INTERFACE
+                          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
+                          $<INSTALL_INTERFACE:include>
+                         )
+
 add_executable(cheat src/cheat.cpp)
+target_link_libraries(cheat PUBLIC cheateq)
 add_executable(fheat src/fheat.f90)
 target_link_libraries(fheat PUBLIC fheateq)
 
@@ -33,21 +49,13 @@ target_link_libraries(fheat PUBLIC fheateq)
 #
 # Several packages are pre-defined by cmake, for example:
 # https://cmake.org/cmake/help/latest/module/FindMPI.html
-
-target_compile_features(cheat PUBLIC cxx_std_11)
-#target_compile_features(fheat PUBLIC fortran_std_08)
-target_include_directories(cheat
-                           PUBLIC
-                          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                          $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
-                          $<INSTALL_INTERFACE:include>
-                         )
+# https://cmake.org/cmake/help/latest/module/FindOpenMP.html
 
 if(BUILD_TESTS)
   add_subdirectory(tests)
 endif()
 
 install_bins(cheat fheat)
-install_libs(NAME fheateq TARGETS fheateq)
+install_libs(TARGETS cheateq fheateq)
 install(DIRECTORY include/heateq DESTINATION include)
 install(DIRECTORY ${PROJECT_BINARY_DIR}/include/heateq DESTINATION include)
