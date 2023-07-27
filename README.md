@@ -42,22 +42,50 @@ make and cmake build styles.  The cmake build includes
 tests.
 
 
+## Using heateq in your C++ project
+
+heateq installs a header-only C++ library
+into `<prefix>/include/heateq/`.
+
+For convenience with cmake projects, you can import a CMake
+target that references this project using,
+
+```
+find_package(heateq REQUIRED)
+...
+target_link_libraries(<your target name> PRIVATE heateq::cheateq)
+```
+
+To make the installed heateq project discoverable, add its install
+prefix to `CMAKE_PREFIX_PATH`.
+
+
+For other projects, you can fall-back to pkg-config using,
+```
+$ pkg-config --cflags cheateq
+$ pkg-config --libs cheateq
+```
+
+For pkg-config to find its config file, you will need to
+add `<prefix>/pkgconfig`  to `PKG_CONFIG_PATH`.
+
+
 ## Using heateq in your Fortran project
 
-The fheateq library exports CMake package files and pkg-config files
-you can reference to include fheateq in other projects.
+The heateq library exports CMake package files and pkg-config files
+you can reference to include heateq in other projects.
 The package files are located in the library directory in
 the installation prefix.
 
-For CMake projects, find and link to fheateq with,
+For CMake projects, find and link to heateq with,
 
 ```
-find_package(fheateq REQUIRED)
+find_package(heateq REQUIRED)
 ...
-target_link_libraries(<your target name> PRIVATE fheateq::fheateq)
+target_link_libraries(<your target name> PRIVATE heateq::fheateq)
 ```
 
-To make the installed fheateq project discoverable, add its install
+To make the installed heateq project discoverable, add its install
 prefix to `CMAKE_PREFIX_PATH`.
 
 
@@ -68,7 +96,7 @@ $ pkg-config --libs fheateq
 ```
 
 For pkg-config to find its config file, you will need to
-add `<fheateq install prefix>/pkgconfig`  to `PKG_CONFIG_PATH`.
+add `<heateq install prefix>/pkgconfig`  to `PKG_CONFIG_PATH`.
 
 
 ## References

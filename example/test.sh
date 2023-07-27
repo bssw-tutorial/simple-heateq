@@ -12,7 +12,7 @@ make
 make install
 
 echo "Pkg-config options:"
-export PKG_CONFIG_PATH=$PWD/../inst/lib/pkgconfig
+export PKG_CONFIG_PATH=../../inst/lib/pkgconfig
 pkg-config fheateq --cflags
 pkg-config fheateq --libs
 
